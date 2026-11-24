@@ -1,0 +1,96 @@
+name: Deploy to GitHub Pages
+
+# main 브랜치에 push될 때마다 자동으로 정적 빌드 -> GitHub Pages 배포.
+# (주의: 이 워크플로는 app/07, app/08의 page.js를 "빌드 환경 안에서만"
+#  정적 안내 페이지로 교체한다. 실제 저장소의 원본 소스는 건드리지
+#  않으므로, 로컬에서 npm run dev로 실행할 때는 평소처럼 전체 기능이
+#  그대로 동작한다.)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nextjs-practice
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: nextjs-practice/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Swap server-only pages for static placeholders
+        run: |
+          rm -rf app/api
+          cp app/07-api-route/page.static.js app/07-api-route/page.js
+          cp app/08-forms-action/page.static.js app/08-forms-action/page.js
+          rm -f app/08-forms-action/actions.js
+
+      - name: Write export-only Next config
+        run: |
+          # repo("knowledge")는 여러 프로젝트를 담는 저장소라서, 이 프로젝트는
+          # Pages 사이트의 루트가 아니라 /nextjs-practice 하위 경로에 둔다.
+          # (https://<user>.github.io/knowledge/nextjs-practice/)
+          cat > next.config.js <<'EOF'
+          /** @type {import('next').NextConfig} */
+          const repo = "${{ github.event.repository.name }}";
+          const base = `/${repo}/nextjs-practice`;
+          const nextConfig = {
+            output: "export",
+            basePath: base,
+            assetPrefix: `${base}/`,
+            images: { unoptimized: true },
+            trailingSlash: true,
+          };
+          module.exports = nextConfig;
+          EOF
+
+      - name: Build
+        run: npm run build
+
+      - name: Stage site (nest under /nextjs-practice to match basePath)
+        run: |
+          mkdir -p ../site/nextjs-practice
+          cp -r out/. ../site/nextjs-practice/
+          cat > ../site/index.html <<'EOF'
+          <!doctype html>
+          <meta charset="utf-8">
+          <meta http-equiv="refresh" content="0; url=./nextjs-practice/">
+          <a href="./nextjs-practice/">nextjs-practice로 이동</a>
+          EOF
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
