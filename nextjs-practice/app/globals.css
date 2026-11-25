@@ -94,3 +94,16 @@ input, textarea, select {
   color: #9fd4ff;
   margin-left: 8px;
 }
+
+/* loading.js 등 로딩 스켈레톤용 */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.skeleton-bar {
+  height: 14px;
+  border-radius: 4px;
+  background: #2a2e37;
+  animation: skeleton-pulse 1.2s ease-in-out infinite;
+}

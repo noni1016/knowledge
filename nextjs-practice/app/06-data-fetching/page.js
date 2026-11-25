@@ -9,7 +9,7 @@
 async function fakeFetchRobotStatus() {
   // 실제로는: const res = await fetch("https://api.example.com/robots", { cache: "no-store" });
   //          const data = await res.json();
-  await new Promise((r) => setTimeout(r, 300)); // 네트워크 지연 흉내
+  await new Promise((r) => setTimeout(r, 1200)); // 네트워크 지연 흉내 (loading.js가 눈에 보이도록 넉넉하게)
   return [
     { id: "r1", name: "Dishwasher-bot", battery: 82 },
     { id: "r2", name: "Chopping-arm", battery: 45 },
@@ -36,9 +36,14 @@ export default async function DataFetchingPage() {
       ))}
 
       <p style={{ opacity: 0.7 }}>
-        로딩 상태를 보여주고 싶다면, 같은 폴더에 <code>loading.js</code>를
-        만들면 Next.js가 Suspense로 자동 연결해서 데이터가 준비될 때까지
-        그 UI를 먼저 보여준다. (이 데모에는 생략했지만 폴더 README 참고)
+        같은 폴더의 <code>loading.js</code> 파일이 바로 이 페이지의 로딩
+        UI입니다 — 파일 이름 규칙만으로 Next.js가 자동으로 Suspense
+        경계를 만들어준 것이라, 이 페이지 코드 어디에도 "로딩 중" 상태를
+        직접 다루는 코드가 없습니다. <code>npm run dev</code>로 실행하고
+        이 페이지로 이동해보면 스켈레톤 UI가 먼저 보였다가(지금은 1.2초
+        지연) 실제 데이터로 바뀌는 걸 확인할 수 있습니다. (GitHub
+        Pages처럼 정적으로 미리 구워둔 배포본에서는 fetch가 이미 빌드
+        시점에 끝나있어서 이 로딩 화면이 사실상 보이지 않습니다.)
       </p>
     </>
   );
