@@ -9,7 +9,12 @@
 //   JS 이벤트 핸들러 없이도 폼이 동작한다 (progressive enhancement).
 const submissions = []; // 데모용 인메모리 저장소
 
-export async function submitFeedback(formData) {
+// useFormState(fn, initialState)로 감싼 액션은 React가 호출할 때
+// (이전 state, formData) 두 인자를 넘겨준다. 인자를 하나만 받으면
+// formData 자리에 실제로는 "이전 state"가 들어와버려서
+// formData.get is not a function 에러가 난다 — 꼭 두 번째 인자로
+// 받아야 한다 (첫 번째 prevState는 여기서는 안 쓰므로 밑줄로 표시).
+export async function submitFeedback(prevState, formData) {
   const message = formData.get("message");
 
   if (!message || message.trim().length === 0) {
