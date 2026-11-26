@@ -7,6 +7,7 @@
 | 폴더 | 내용 |
 |---|---|
 | [`nextjs-practice/`](./nextjs-practice) | Next.js(App Router) / React 핵심 개념 10가지를 실습 코드로 복습하는 프로젝트. [GitHub Pages로 데모 보기](https://noni1016.github.io/knowledge/nextjs-practice/) |
+| [`video-classification/`](./video-classification) | 사전학습된 3D CNN(`r3d_18`)으로 UCF101 영상 일부를 파인튜닝하며 영상 데이터 학습 방법을 익히는 노트북 모음 |
 
 ## GitHub Pages 배포
 
