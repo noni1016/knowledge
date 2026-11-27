@@ -7,8 +7,9 @@
 | 폴더 | 내용 |
 |---|---|
 | [`nextjs-practice/`](./nextjs-practice) | Next.js(App Router) / React 핵심 개념 10가지를 실습 코드로 복습하는 프로젝트. [GitHub Pages로 데모 보기](https://noni1016.github.io/knowledge/nextjs-practice/) |
-| [`video-classification/`](./video-classification) | 사전학습된 3D CNN(`r3d_18`)으로 UCF101 영상 일부를 파인튜닝하며 영상 데이터 학습 방법을 익히는 노트북 모음 |
 | [`python-syntax/`](./python-syntax) | Python 문법을 주제별 12개 Jupyter 노트북으로 정리 (변수/타입부터 데코레이터, OOP, 제너레이터, 타입힌트, 동시성까지) |
+| [`food101-classification/`](./food101-classification) | Food-101 101개 음식 카테고리를 ImageNet 사전학습 ResNet-18로 전이학습 (테스트 정확도 74.93%) |
+| [`video-classification/`](./video-classification) | 사전학습된 3D CNN(`r3d_18`)으로 UCF101 영상 일부를 파인튜닝하며 영상 데이터 학습 방법을 익히는 노트북 모음 |
 
 ## GitHub Pages 배포
 
