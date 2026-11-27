@@ -1,7 +1,9 @@
 torch
 torchvision
 opencv-python
-remotezip
+requests
+tqdm
 matplotlib
 numpy
 jupyter
+# remotezip  # 01 노트북 맨 아래 "참고" 섹션(구글 클라우드 스토리지에서 직접 클래스 고르기)을 쓸 때만 필요
